@@ -1,0 +1,31 @@
+plugins {
+  id "application"
+}
+
+mainClassName = "com.anthli.diffr.Diffr"
+
+version "0.0.1"
+
+test {
+  useJUnitPlatform()
+
+  testLogging {
+    events = ["passed", "skipped", "failed"]
+
+    showStandardStreams = true
+
+    outputs.upToDateWhen {
+      false
+    }
+  }
+}
+
+repositories {
+  jcenter()
+  mavenCentral()
+}
+
+dependencies {
+  testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.2"
+  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.5.2"
+}
