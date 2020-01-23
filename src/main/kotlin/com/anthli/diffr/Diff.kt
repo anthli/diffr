@@ -7,7 +7,7 @@ import kotlin.math.max
  */
 class Diff(private val a: String, private val b: String) {
   fun compute(): Int {
-    return naiveLCS(a.length, b.length)
+    return lcs(a.length, b.length)
   }
 
   /**
@@ -18,12 +18,14 @@ class Diff(private val a: String, private val b: String) {
    * recursive tree. This ends up with a runtime of O(2^N) where N is the sum of
    * the lengths of strings a and b.
    *
+   * This will be kept here for educational purposes.
+   *
    * @param m
    *        The length of string a.
    * @param n
    *        The length of string b.
    */
-  fun naiveLCS(m: Int, n: Int): Int {
+  private fun naiveLCS(m: Int, n: Int): Int {
     if (m == 0 || n == 0) {
       return 0
     }
@@ -39,7 +41,7 @@ class Diff(private val a: String, private val b: String) {
    * An implementation of the Longest Common Subsequence algorithm using dynamic
    * programming via tabulation.
    *
-   * This approach has a much better runtime of only O(mn) where m and n are the
+   * This approach has a much better runtime of only O(MN) where M and N are the
    * lengths of strings a and b, respectively.
    *
    * @param m
@@ -47,11 +49,11 @@ class Diff(private val a: String, private val b: String) {
    * @param n
    *        The length of string b.
    */
-  fun tabulatedLCS(m: Int, n: Int): Int {
-    val editGraph = arrayOf<Array<Int>>()
+  private fun lcs(m: Int, n: Int): Int {
+    val editGraph = Array(m + 1) { IntArray(n + 1) }
 
-    for (i in 0..m + 1) {
-      for (j in 0..n + 1) {
+    for (i in 0..m) {
+      for (j in 0..n) {
         if (i == 0 || j == 0) {
           editGraph[i][j] = 0
         }
