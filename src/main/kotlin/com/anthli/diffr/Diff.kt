@@ -6,8 +6,9 @@ import kotlin.math.max
  * Diff implementation that takes in two sequences and generates a diff output.
  */
 class Diff(private val a: String, private val b: String) {
-  fun compute(): Int {
-    return lcs(a.length, b.length)
+  fun compute(): String {
+    val editGraph = getLcsEditGraph(a.length, b.length)
+    return getLcs(editGraph, a.length, b.length)
   }
 
   /**
@@ -25,16 +26,16 @@ class Diff(private val a: String, private val b: String) {
    * @param n
    *        The length of string b.
    */
-  private fun naiveLCS(m: Int, n: Int): Int {
+  private fun naiveLcs(m: Int, n: Int): Int {
     if (m == 0 || n == 0) {
       return 0
     }
 
     if (a[m - 1] == b[n - 1]) {
-      return 1 + naiveLCS(m - 1, n - 1)
+      return 1 + naiveLcs(m - 1, n - 1)
     }
 
-    return max(naiveLCS(m - 1, n), naiveLCS(m, n -1))
+    return max(naiveLcs(m - 1, n), naiveLcs(m, n -1))
   }
 
   /**
@@ -48,24 +49,39 @@ class Diff(private val a: String, private val b: String) {
    *        The length of string a.
    * @param n
    *        The length of string b.
+   * @return The [EditGraph] containing the path of the longest common
+   *         subsequence.
    */
-  private fun lcs(m: Int, n: Int): Int {
-    val editGraph = Array(m + 1) { IntArray(n + 1) }
+  private fun getLcsEditGraph(m: Int, n: Int): EditGraph {
+    val editGraph = EditGraph(m, n)
 
-    for (i in 0..m) {
-      for (j in 0..n) {
-        if (i == 0 || j == 0) {
-          editGraph[i][j] = 0
-        }
-        else if (a[i - 1] == b[j - 1]) {
-          editGraph[i][j] = editGraph[i - 1][j - 1] + 1
+    for (i in 1..m) {
+      for (j in 1..n) {
+        if (a[i - 1] == b[j - 1]) {
+          editGraph[i, j] = 1 + editGraph[i - 1, j - 1]
         }
         else {
-          editGraph[i][j] = max(editGraph[i - 1][j], editGraph[i][j - 1])
+          editGraph[i, j] = max(editGraph[i - 1, j], editGraph[i, j - 1])
         }
       }
     }
 
-    return editGraph[m][n]
+    return editGraph
+  }
+
+  private fun getLcs(editGraph: EditGraph, m: Int, n: Int): String {
+    if (m == 0 || n == 0) {
+      return ""
+    }
+
+    if (a[m - 1] == b[n - 1]) {
+      return getLcs(editGraph, m - 1, n - 1) + a[m - 1]
+    }
+
+    if (editGraph[m - 1, n] < editGraph[m, n - 1]) {
+      return getLcs(editGraph, m, n - 1)
+    }
+
+    return getLcs(editGraph, m - 1, n)
   }
 }
