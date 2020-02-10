@@ -7,9 +7,9 @@ data class Diff(val op: Operation, val text: String) {
   override fun toString(): String {
     return buildString {
       append(when (op) {
-        Operation.EQUAL -> ""
         Operation.INSERT -> "+"
         Operation.DELETE -> "-"
+        Operation.EQUAL -> ""
       })
       append(text)
     }
