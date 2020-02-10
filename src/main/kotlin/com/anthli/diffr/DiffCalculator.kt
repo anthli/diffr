@@ -6,15 +6,14 @@ import kotlin.math.max
  * Diff implementation that takes in two sequences and generates a diff output.
  */
 class DiffCalculator(private val a: String, private val b: String) {
-  private val m = a.length
-  private val n = b.length
-
   /**
    * Computes the sequence of [Diff]s between strings a and b.
    *
    * @return The sequence of [Diff]s between strings and b.
    */
   fun compute(): Sequence<Diff> {
+    val m = a.length
+    val n = b.length
     val editGraph = getLcsEditGraph(m, n)
     return computeDiffs(editGraph, m, n)
   }
@@ -45,10 +44,37 @@ class DiffCalculator(private val a: String, private val b: String) {
    * 3. The old characters deleted from string a
    *
    * where the LCS of the diff is based on the first matching character in
-   * string a. Deletions have higher priority than insertions.
+   * string a.
    *
-   * For example, for strings a = "abcMdef" and b = "zyxMvuw", the following
-   * would occur in this order:
+   * Take an example with strings a = ABCABBA and b = CBABAC. The edit graph
+   * would be:
+   *
+   * ```
+   *     b |     C   B   A   B   A   C
+   *     n | 0   1   2   3   4   5   6
+   * a m   |
+   * -------+-------------------------
+   *   0   | 0   0   0   0   0   0   0
+   *       |
+   * A 1   | 0   0   0   1   1   1   1
+   *       |
+   * B 2   | 0   0   1   1   2   2   2
+   *       |
+   * C 3   | 0   1   1   1   2   2   3
+   *       |
+   * A 4   | 0   1   1   2   2   3   3
+   *       |
+   * B 5   | 0   1   2   2   3   3   3
+   *       |
+   * B 6   | 0   1   2   2   3   3   3
+   *       |
+   * A 7   | 0   1   2   3   3   4   4
+   * ```
+   *
+   * The backtrace will be
+   *
+   * Deletions have higher priority than insertions. For example, for strings
+   * a = "abcMdef" and b = "zyxMvuw", the following would occur in this order:
    * 1. "abc" in string a would be deletions
    * 2. "zyx" in string b would be insertions
    * 3. "M" would be considered equal
@@ -86,18 +112,18 @@ class DiffCalculator(private val a: String, private val b: String) {
         .plus(Diff(Operation.EQUAL, a[m - 1].toString()))
     }
 
-    // Moving left in the edit graph indicates an insertion of a new character
-    // from string b
-    if (n > 0 && (m == 0 || editGraph[m - 1, n] <= editGraph[m, n - 1])) {
-      return computeDiffs(editGraph, m, n - 1, acc)
-        .plus(Diff(Operation.INSERT, b[n - 1].toString()))
-    }
-
     // Moving up in the edit graph indicates a deletion of an old character from
     // string a
     if (m > 0 && (n == 0 || editGraph[m - 1, n] > editGraph[m, n - 1])) {
       return computeDiffs(editGraph, m - 1, n, acc)
         .plus(Diff(Operation.DELETE, a[m - 1].toString()))
+    }
+
+    // Moving left in the edit graph indicates an insertion of a new character
+    // from string b
+    if (n > 0 && (m == 0 || editGraph[m - 1, n] <= editGraph[m, n - 1])) {
+      return computeDiffs(editGraph, m, n - 1, acc)
+        .plus(Diff(Operation.INSERT, b[n - 1].toString()))
     }
 
     return acc
@@ -116,24 +142,25 @@ class DiffCalculator(private val a: String, private val b: String) {
    * would be:
    *
    * ```
-   *     |     C   B   A   B   A   C
-   *     | 0   1   2   3   4   5   6
-   * ----+--------------------------
-   *   0 | 0   0   0   0   0   0   0
-   *     |
-   * A 1 | 0   0   0   1   1   1   1
-   *     |
-   * B 2 | 0   0   1   1   2   2   2
-   *     |
-   * C 3 | 0   1   1   1   2   2   3
-   *     |
-   * A 4 | 0   1   1   2   2   3   3
-   *     |
-   * B 5 | 0   1   2   2   3   3   3
-   *     |
-   * B 6 | 0   1   2   2   3   3   3
-   *     |
-   * A 7 | 0   1   2   3   3   4   4
+   *     b |     C   B   A   B   A   C
+   *     n | 0   1   2   3   4   5   6
+   * a m   |
+   * -------+-------------------------
+   *   0   | 0   0   0   0   0   0   0
+   *       |
+   * A 1   | 0   0   0   1   1   1   1
+   *       |
+   * B 2   | 0   0   1   1   2   2   2
+   *       |
+   * C 3   | 0   1   1   1   2   2   3
+   *       |
+   * A 4   | 0   1   1   2   2   3   3
+   *       |
+   * B 5   | 0   1   2   2   3   3   3
+   *       |
+   * B 6   | 0   1   2   2   3   3   3
+   *       |
+   * A 7   | 0   1   2   3   3   4   4
    * ```
    *
    * @param m
