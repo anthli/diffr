@@ -38,22 +38,13 @@ class DiffCalculator(private val a: String, private val b: String) {
    * Backtracks the [EditGraph] to produce the [Diff]s between strings a and b.
    * This is a recursive helper function for accumulating all generated [Diff]s.
    *
-   * This sequence will contain (in no order):
-   * 1. The unchanged characters, i.e., the longest common subsequence
-   * 2. The new characters inserted from string b
-   * 3. The old characters deleted from string a
-   *
-   * where the LCS of the diff is based on the first matching character in
-   * string a.
-   *
-   * Take an example with strings a = ABCABBA and b = CBABAC. The edit graph
-   * would be:
-   *
+   * Deletions have higher priority than insertions. For example, take strings
+   * a = ABCABBA and b = CBABAC. The edit graph would be:
    * ```
    *     b |     C   B   A   B   A   C
    *     n | 0   1   2   3   4   5   6
    * a m   |
-   * -------+-------------------------
+   * ------+--------------------------
    *   0   | 0   0   0   0   0   0   0
    *       |
    * A 1   | 0   0   0   1   1   1   1
@@ -71,21 +62,34 @@ class DiffCalculator(private val a: String, private val b: String) {
    * A 7   | 0   1   2   3   3   4   4
    * ```
    *
-   * The backtrace will be
+   * The backtrace will be (^ indicates character in LCS):
+   * ```
+   *     b |     C   B   A   B   A   C
+   *     n | 0   1   2   3   4   5   6
+   * a m   |
+   * ------+--------------------------
+   *   0   | 0   0   0   0   0   0   0
+   *       | |
+   * A 1   | 0   0   0   1   1   1   1
+   *       | |
+   * B 2   | 0   0   1   1   2   2   2
+   *       |   \
+   * C 3   | 0   1*  1   1   2   2   3
+   *       |     |
+   * A 4   | 0   1   1   2   2   3   3
+   *       |       \
+   * B 5   | 0   1   2*- 2   3   3   3
+   *       |               \
+   * B 6   | 0   1   2   2   3*  3   3
+   *       |                   \
+   * A 7   | 0   1   2   3   3   4*- 4
+   * ```
    *
-   * Deletions have higher priority than insertions. For example, for strings
-   * a = "abcMdef" and b = "zyxMvuw", the following would occur in this order:
-   * 1. "abc" in string a would be deletions
-   * 2. "zyx" in string b would be insertions
-   * 3. "M" would be considered equal
-   * 4. "def" in string a would be deletions
-   * 5. "vuw" in string b would be insertions
-   *
-   * Therefore, the resulting diffs would be something like this:
+   * where the sequence of diffs would be:
    *
    * ```
-   * a b c z y x M d e f v u w
-   * - - - + + +   - - - + + +
+   * A B C A B A B A C
+   * - -   -   +     +
    * ```
    *
    * @param editGraph
@@ -113,14 +117,16 @@ class DiffCalculator(private val a: String, private val b: String) {
     }
 
     // Moving up in the edit graph indicates a deletion of an old character from
-    // string a
+    // string a. Using > instead of >= here ensures that deletions will occur
+    // before insertions because the inequality check is strict.
     if (m > 0 && (n == 0 || editGraph[m - 1, n] > editGraph[m, n - 1])) {
       return computeDiffs(editGraph, m - 1, n, acc)
         .plus(Diff(Operation.DELETE, a[m - 1].toString()))
     }
 
     // Moving left in the edit graph indicates an insertion of a new character
-    // from string b
+    // from string b. Using <= instead of < ensures that insertions will occur
+    // after deletions because the inequality check is not strict.
     if (n > 0 && (m == 0 || editGraph[m - 1, n] <= editGraph[m, n - 1])) {
       return computeDiffs(editGraph, m, n - 1, acc)
         .plus(Diff(Operation.INSERT, b[n - 1].toString()))
@@ -140,12 +146,11 @@ class DiffCalculator(private val a: String, private val b: String) {
    *
    * Take an example with strings a = ABCABBA and b = CBABAC. The edit graph
    * would be:
-   *
    * ```
    *     b |     C   B   A   B   A   C
    *     n | 0   1   2   3   4   5   6
    * a m   |
-   * -------+-------------------------
+   * ------+--------------------------
    *   0   | 0   0   0   0   0   0   0
    *       |
    * A 1   | 0   0   0   1   1   1   1
