@@ -1,3 +1,5 @@
 rootProject.name = "diffr"
 
 include "diff-lib"
+
+include "server"
