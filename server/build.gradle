@@ -1,4 +1,5 @@
 plugins {
+  id "org.jetbrains.kotlin.plugin.serialization" version "$kotlinVersion"
   id "application"
 }
 
@@ -14,6 +15,9 @@ sourceSets {
 }
 
 dependencies {
+  implementation project(":diff-lib")
+
   implementation "io.ktor:ktor-server-core:$ktorVersion"
   implementation "io.ktor:ktor-server-netty:$ktorVersion"
+  implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.14.0"
 }
