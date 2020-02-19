@@ -25,7 +25,7 @@ package com.anthli.diffr
  * An edit graph is an m x n matrix that holds the point values for each path
  * taken when finding a solution for the longest common subsequence.
  */
-class EditGraph(m: Int, n: Int) {
+internal class EditGraph(m: Int, n: Int) {
   private val editGraph = Array(m + 1) { IntArray(n + 1) }
 
   operator fun get(x: Int, y: Int): Int {

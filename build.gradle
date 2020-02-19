@@ -6,6 +6,7 @@ buildscript {
 
 plugins {
   id "org.jetbrains.kotlin.jvm" version "$kotlinVersion"
+  id "org.jetbrains.kotlin.plugin.serialization" version "$kotlinVersion"
 }
 
 version "0.0.1"
@@ -19,6 +20,7 @@ allprojects {
 
 subprojects {
   apply plugin: "kotlin"
+  apply plugin: "kotlinx-serialization"
 
   test {
     useJUnitPlatform()
@@ -38,6 +40,7 @@ subprojects {
 
   dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.14.0"
     implementation "org.slf4j:slf4j-log4j12:1.7.30"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
