@@ -18,9 +18,12 @@
 
 package com.anthli.diffr
 
+import kotlinx.serialization.Serializable
+
 /**
  * The different types of operations that can happen in a diff.
  */
+@Serializable
 enum class Operation {
   /**
    * A change caused by insertion.

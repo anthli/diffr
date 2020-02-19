@@ -18,9 +18,12 @@
 
 package com.anthli.diffr
 
+import kotlinx.serialization.Serializable
+
 /**
  * Encapsulation of the type of operation and the involved text of a diff.
  */
+@Serializable
 data class Diff(val op: Operation, val text: String) {
   override fun toString(): String {
     return buildString {
