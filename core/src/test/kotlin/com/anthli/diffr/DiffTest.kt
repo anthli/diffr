@@ -18,9 +18,12 @@
 
 package com.anthli.diffr
 
+import kotlinx.serialization.UnstableDefault
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
+@UnstableDefault
 class DiffTest {
   @Test
   fun `test Operation INSERT toString`() {
@@ -38,5 +41,19 @@ class DiffTest {
   fun `test Operation EQUAL toString`() {
     val diff = Diff(Operation.EQUAL, "1")
     Assertions.assertEquals("1", diff.toString())
+  }
+
+  @Test
+  fun `test JSON stringify`() {
+    val diff = Diff(Operation.INSERT, "A")
+    val json = Json.stringify(Diff.serializer(), diff)
+    Assertions.assertEquals("""{"op":"INSERT","text":"A"}""", json)
+  }
+
+  @Test
+  fun `test JSON parse`() {
+    val expectedDiff = Diff(Operation.DELETE, "B")
+    val actualDiff = Json.parse(Diff.serializer(), """{"op":"DELETE","text":"B"}""")
+    Assertions.assertEquals(expectedDiff, actualDiff)
   }
 }
