@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr.serializer
+package com.anthli.diffr.serialization
 
 import com.anthli.diffr.Diff
 import com.anthli.diffr.Operation
@@ -28,10 +28,17 @@ import org.junit.jupiter.api.Test
 @UnstableDefault
 class DiffSerializerTest {
   @Test
-  fun `test Diff serialization`() {
-    val x = Diff(Operation.INSERT, "A")
-    val y = Json.stringify(DiffSerializer, x)
-    val diff = Json.parse(DiffSerializer, """{"op": "INSERT", "text": "A"}""")
+  fun `test Diff JSON stringify`() {
+    val diff = Diff(Operation.INSERT, "A")
+    val json = Json.stringify(DiffSerializer, diff)
+    Assertions.assertNotNull(json)
+    Assertions.assertEquals(""""{\"op\": \"INSERT\", \"text\": \"A\"}"""", json)
+  }
+
+  @Test
+  fun `test Diff JSON parse`() {
+    val json = """"{\"op\": \"INSERT\", \"text\": \"A\"}""""
+    val diff = Json.parse(DiffSerializer, json)
     Assertions.assertNotNull(diff)
   }
 }

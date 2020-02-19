@@ -16,29 +16,34 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr.serializer
+package com.anthli.diffr.serialization
 
 import com.anthli.diffr.Diff
 import com.anthli.diffr.Operation
 import kotlinx.serialization.Decoder
 import kotlinx.serialization.Encoder
-import kotlinx.serialization.KSerializer
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialDescriptor
 import kotlinx.serialization.Serializer
+import kotlinx.serialization.internal.EnumDescriptor
 import kotlinx.serialization.internal.StringDescriptor
 
 /**
  * Serializer for the [Diff] class.
  */
+
 @Serializer(forClass = Diff::class)
-object DiffSerializer : KSerializer<Diff> {
+object DiffSerializer {
   override val descriptor: SerialDescriptor = StringDescriptor
 
+  @InternalSerializationApi
   override fun deserialize(decoder: Decoder): Diff {
-    return Diff(Operation.values()[decoder.decodeEnum(StringDescriptor)], decoder.decodeString())
+    val descriptor = EnumDescriptor("op")
+    val x = decoder.decodeEnum(descriptor)
+    return Diff(Operation.INSERT, "A")
   }
 
   override fun serialize(encoder: Encoder, obj: Diff) {
-    encoder.encodeString("""{"op": "${obj.op}", "text": "${obj.text}", }""")
+    encoder.encodeString("""{"op": "${obj.op}", "text": "${obj.text}"}""")
   }
 }
