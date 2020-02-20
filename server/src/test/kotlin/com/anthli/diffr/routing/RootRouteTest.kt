@@ -18,21 +18,18 @@
 
 package com.anthli.diffr.routing
 
-import com.anthli.diffr.main
-import io.ktor.application.Application
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.testing.handleRequest
-import io.ktor.server.testing.withTestApplication
 import org.junit.jupiter.api.Test
 
 class RootRouteTest : RouteTest() {
   @Test
-  fun `test get on root`() {
-    withTestApplication(Application::main) {
-      handleRequest(HttpMethod.Get, "/").apply {
-        compare(response, HttpStatusCode.OK, "Root")
-      }
-    }
+  fun `test get on root endpoint`() {
+    testEndpoint("/", HttpMethod.Get, HttpStatusCode.OK, "Root")
+  }
+
+  @Test
+  fun `test get on invalid endpoint`() {
+    testEndpoint("/invalid", HttpMethod.Get)
   }
 }

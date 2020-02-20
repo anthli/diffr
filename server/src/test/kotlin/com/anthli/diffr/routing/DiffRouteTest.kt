@@ -18,21 +18,13 @@
 
 package com.anthli.diffr.routing
 
-import com.anthli.diffr.main
-import io.ktor.application.Application
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.testing.handleRequest
-import io.ktor.server.testing.withTestApplication
 import org.junit.jupiter.api.Test
 
 class DiffRouteTest : RouteTest() {
   @Test
-  fun `test get on diff`() {
-    withTestApplication(Application::main) {
-      handleRequest(HttpMethod.Get, "/diff").apply {
-        compare(response, HttpStatusCode.OK, "Diff")
-      }
-    }
+  fun `test get on diff endpoint`() {
+    testEndpoint("/diff", HttpMethod.Get, HttpStatusCode.OK, "Diff")
   }
 }
