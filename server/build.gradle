@@ -2,20 +2,13 @@ plugins {
   id "application"
 }
 
-mainClassName = "com.anthli.diffr.ServerKt"
-
-sourceSets {
-  main {
-    resources {
-      srcDirs = ["src/main/resources"]
-      includes = ["*.properties"]
-    }
-  }
-}
+mainClassName = "io.ktor.server.netty.EngineMain"
 
 dependencies {
   implementation project(":core")
 
   implementation "io.ktor:ktor-server-core:$ktorVersion"
   implementation "io.ktor:ktor-server-netty:$ktorVersion"
+
+  testImplementation "io.ktor:ktor-server-test-host:$ktorVersion"
 }

@@ -16,21 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr
+package com.anthli.diffr.routing
 
-import com.anthli.diffr.routing.diff
-import com.anthli.diffr.routing.root
-import io.ktor.application.Application
-import io.ktor.application.install
-import io.ktor.features.CallLogging
-import io.ktor.features.DefaultHeaders
-import io.ktor.routing.Routing
+import io.ktor.application.call
+import io.ktor.http.ContentType
+import io.ktor.response.respondText
+import io.ktor.routing.Route
+import io.ktor.routing.get
 
-fun Application.main() {
-  install(DefaultHeaders)
-  install(CallLogging)
-  install(Routing) {
-    root()
-    diff()
+/**
+ * Routing for the diff endpoint
+ */
+fun Route.diff() {
+  get("/diff") {
+    call.respondText("Diff", ContentType.Text.Html)
   }
 }

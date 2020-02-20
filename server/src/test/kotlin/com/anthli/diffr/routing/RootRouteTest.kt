@@ -16,21 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr
+package com.anthli.diffr.routing
 
-import com.anthli.diffr.routing.diff
-import com.anthli.diffr.routing.root
+import com.anthli.diffr.main
 import io.ktor.application.Application
-import io.ktor.application.install
-import io.ktor.features.CallLogging
-import io.ktor.features.DefaultHeaders
-import io.ktor.routing.Routing
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.testing.handleRequest
+import io.ktor.server.testing.withTestApplication
+import org.junit.jupiter.api.Test
 
-fun Application.main() {
-  install(DefaultHeaders)
-  install(CallLogging)
-  install(Routing) {
-    root()
-    diff()
+class RootRouteTest : RouteTest() {
+  @Test
+  fun `test get on root`() {
+    withTestApplication(Application::main) {
+      handleRequest(HttpMethod.Get, "/").apply {
+        compare(response, HttpStatusCode.OK, "Root")
+      }
+    }
   }
 }
