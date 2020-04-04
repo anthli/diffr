@@ -16,19 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr.routing
+package com.anthli.diffr.controller
 
-import io.ktor.application.call
-import io.ktor.http.ContentType
-import io.ktor.response.respondText
-import io.ktor.routing.Route
-import io.ktor.routing.get
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
 
 /**
  * Routing for the root endpoint.
  */
-fun Route.root() {
-  get("/") {
-    call.respondText("Root", ContentType.Text.Html)
+@RestController
+class RootController {
+  @GetMapping("/")
+  fun index(): String {
+    return "Root"
   }
 }

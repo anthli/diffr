@@ -16,15 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr.routing
+package com.anthli.diffr.controller
 
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
 import org.junit.jupiter.api.Test
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpMethod
+import org.springframework.http.MediaType
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-class DiffRouteTest : RouteTest() {
+@SpringBootTest
+@AutoConfigureMockMvc
+class DiffControllerTest : ControllerTest() {
   @Test
   fun `test get on diff endpoint`() {
-    testEndpoint("/diff", HttpMethod.Get, HttpStatusCode.OK, "Diff")
+    testEndpoint("/diff", MediaType.TEXT_HTML, HttpMethod.GET, status().isOk, "Diff")
   }
 }

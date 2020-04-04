@@ -16,20 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr.routing
+package com.anthli.diffr.controller
 
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
-import org.junit.jupiter.api.Test
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
 
-class RootRouteTest : RouteTest() {
-  @Test
-  fun `test get on root endpoint`() {
-    testEndpoint("/", HttpMethod.Get, HttpStatusCode.OK, "Root")
-  }
-
-  @Test
-  fun `test get on invalid endpoint`() {
-    testEndpoint("/invalid", HttpMethod.Get)
+/**
+ * Routing for the diff endpoint.
+ */
+@RestController
+class DiffController {
+  @GetMapping("/diff")
+  fun diff(): String {
+    return "Diff"
   }
 }

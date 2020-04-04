@@ -18,19 +18,12 @@
 
 package com.anthli.diffr
 
-import com.anthli.diffr.routing.diff
-import com.anthli.diffr.routing.root
-import io.ktor.application.Application
-import io.ktor.application.install
-import io.ktor.features.CallLogging
-import io.ktor.features.DefaultHeaders
-import io.ktor.routing.Routing
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
 
-fun Application.main() {
-  install(DefaultHeaders)
-  install(CallLogging)
-  install(Routing) {
-    root()
-    diff()
-  }
+@SpringBootApplication
+class Application
+
+fun main(args: Array<String>) {
+  SpringApplication.run(Application::class.java, *args)
 }
