@@ -18,23 +18,34 @@
 
 package com.anthli.diffr.controller
 
-import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.ResultMatcher
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 
-@SpringBootTest
+/**
+ * A base class containing generalized testing functionality for controllers.
+ */
 @AutoConfigureMockMvc
-class RootControllerTest : ControllerTest() {
-  @Test
-  fun `test get on root endpoint`() {
-    testEndpoint("/", MediaType.TEXT_HTML, HttpMethod.GET, status().isOk, "Root")
-  }
+abstract class ControllerTest {
+  @Autowired
+  private lateinit var mvc: MockMvc
 
-  @Test
-  fun `test get on invalid endpoint`() {
-    testEndpoint("/invalid", MediaType.TEXT_HTML, HttpMethod.GET, status().isNotFound)
+  fun testEndpoint(
+    endpoint: String,
+    mediaType: MediaType,
+    method: HttpMethod,
+    expectedStatus: ResultMatcher,
+    expectedContent: String? = null
+  ) {
+    val builder = MockMvcRequestBuilders.request(method, endpoint).accept(mediaType)
+    val result = mvc.perform(builder).andExpect(expectedStatus)
+    if (expectedContent != null) {
+      result.andExpect(content().string(expectedContent))
+    }
   }
 }

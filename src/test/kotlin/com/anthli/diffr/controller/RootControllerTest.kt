@@ -16,24 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr
+package com.anthli.diffr.controller
 
-/**
- * The different types of operations that can happen in a diff.
- */
-enum class Operation {
-  /**
-   * A change caused by insertion.
-   */
-  INSERT,
+import org.junit.jupiter.api.Test
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpMethod
+import org.springframework.http.MediaType
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-  /**
-   * A change caused by deletion.
-   */
-  DELETE,
+@SpringBootTest
+class RootControllerTest : ControllerTest() {
+  @Test
+  fun `test get on root endpoint`() {
+    testEndpoint("/", MediaType.TEXT_HTML, HttpMethod.GET, status().isOk, "Root")
+  }
 
-  /**
-   * No change.
-   */
-  EQUAL
+  @Test
+  fun `test get on invalid endpoint`() {
+    testEndpoint("/invalid", MediaType.TEXT_HTML, HttpMethod.GET, status().isNotFound)
+  }
 }

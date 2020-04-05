@@ -16,29 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr
+package com.anthli.diffr.controller
 
-import kotlinx.serialization.Serializable
+import org.junit.jupiter.api.Test
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpMethod
+import org.springframework.http.MediaType
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-/**
- * Encapsulation of the type of operation and the involved text of a diff.
- */
-@Serializable
-data class Diff(val op: Operation, val text: String) {
-  override fun toString(): String {
-    return buildString {
-      append(when (op) {
-        Operation.INSERT -> "+"
-        Operation.DELETE -> "-"
-        Operation.EQUAL -> ""
-      })
-      append(text)
-    }
-  }
-
-  override fun equals(other: Any?): Boolean {
-    return other is Diff
-      && op == other.op
-      && text == other.text
+@SpringBootTest
+class DiffControllerTest : ControllerTest() {
+  @Test
+  fun `test get on diff endpoint`() {
+    testEndpoint("/diff", MediaType.TEXT_HTML, HttpMethod.GET, status().isOk, "Diff")
   }
 }
