@@ -1,5 +1,7 @@
 # diffr-server
-Just another diff tool.
+![Jenkins Build Status](https://img.shields.io/jenkins/build?jobUrl=http%3A%2F%2Fpi.anthli.com%3A8080%2Fjob%2Fdiffr-server%2F)
+
+Just another diff tool. This is the server component of the app.
 
 diffr is a web application to help visualize the diff between two bodies of
 text.
@@ -11,8 +13,3 @@ a developer. However, not everyone asks themselves "how does it really work?".
 This project started from wanting to learn what really happens behind the scenes
 when running the command `git diff`. While not intended to be a clone, this
 project serves as a learning experience into what constructs a diff.
-
-### Diff Algorithm
-The implementation of the diff algorithm used in this project is based on the
-dynamic programming solution for the Longest Common Subsequence found
-[here](https://en.wikipedia.org/wiki/Longest_common_subsequence_problem).
