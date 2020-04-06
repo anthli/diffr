@@ -1,7 +1,7 @@
-# Diffr
+# diffr-server
 Just another diff tool.
 
-Diffr is a web application to help visualize the diff between two bodies of
+diffr is a web application to help visualize the diff between two bodies of
 text.
 
 ### Introduction
