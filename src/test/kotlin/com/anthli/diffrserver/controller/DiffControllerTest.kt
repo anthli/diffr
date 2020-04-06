@@ -16,18 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr.controller
+package com.anthli.diffrserver.controller
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RestController
+import org.junit.jupiter.api.Test
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpMethod
+import org.springframework.http.MediaType
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-/**
- * Routing for the root endpoint.
- */
-@RestController
-class RootController {
-  @GetMapping("/")
-  fun index(): String {
-    return "Root"
+@SpringBootTest
+class DiffControllerTest : ControllerTest() {
+  @Test
+  fun `test get on diff endpoint`() {
+    testEndpoint("/diff", MediaType.TEXT_HTML, HttpMethod.GET, status().isOk, "Diff")
   }
 }
