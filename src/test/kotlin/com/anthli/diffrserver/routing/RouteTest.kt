@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr.routing
+package com.anthli.diffrserver.routing
 
-import com.anthli.diffr.main
+import com.anthli.diffrserver.main
 import io.ktor.application.Application
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode

@@ -16,19 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr.routing
+package com.anthli.diffrserver.routing
 
-import io.ktor.application.call
-import io.ktor.http.ContentType
-import io.ktor.response.respondText
-import io.ktor.routing.Route
-import io.ktor.routing.get
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import org.junit.jupiter.api.Test
 
-/**
- * Routing for the root endpoint.
- */
-fun Route.root() {
-  get("/") {
-    call.respondText("Root", ContentType.Text.Html)
+class RootRouteTest : RouteTest() {
+  @Test
+  fun `test get on root endpoint`() {
+    testEndpoint("/", HttpMethod.Get, HttpStatusCode.OK, "Root")
+  }
+
+  @Test
+  fun `test get on invalid endpoint`() {
+    testEndpoint("/invalid", HttpMethod.Get)
   }
 }

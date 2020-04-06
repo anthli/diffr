@@ -16,24 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr
+package com.anthli.diffrserver.routing
 
-/**
- * The different types of operations that can happen in a diff.
- */
-enum class Operation {
-  /**
-   * A change caused by insertion.
-   */
-  INSERT,
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import org.junit.jupiter.api.Test
 
-  /**
-   * A change caused by deletion.
-   */
-  DELETE,
-
-  /**
-   * No change.
-   */
-  EQUAL
+class DiffRouteTest : RouteTest() {
+  @Test
+  fun `test get on diff endpoint`() {
+    testEndpoint("/diff", HttpMethod.Get, HttpStatusCode.OK, "Diff")
+  }
 }

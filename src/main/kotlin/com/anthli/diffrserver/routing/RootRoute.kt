@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr.routing
+package com.anthli.diffrserver.routing
 
 import io.ktor.application.call
 import io.ktor.http.ContentType
@@ -25,10 +25,10 @@ import io.ktor.routing.Route
 import io.ktor.routing.get
 
 /**
- * Routing for the diff endpoint
+ * Routing for the root endpoint.
  */
-fun Route.diff() {
-  get("/diff") {
-    call.respondText("Diff", ContentType.Text.Html)
+fun Route.root() {
+  get("/") {
+    call.respondText("Root", ContentType.Text.Html)
   }
 }

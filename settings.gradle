@@ -1,3 +1,1 @@
-rootProject.name = "diffr"
-
-include "core", "server"
+rootProject.name = "diffr-server"

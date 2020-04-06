@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr
+package com.anthli.diffrserver
 
-import com.anthli.diffr.routing.diff
-import com.anthli.diffr.routing.root
+import com.anthli.diffrserver.routing.diff
+import com.anthli.diffrserver.routing.root
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.CallLogging
