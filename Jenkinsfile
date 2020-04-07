@@ -3,25 +3,29 @@ pipeline {
 
   stages {
     stage("Clone source") {
-      checkout([
-        $class: "GitSCM",
-        branches: [[name: "master"]],
-        extensions: [[$class: "WipeWorkspace"]],
-        userRemoteConfigs: [
-          [
-            credentialsId: "a981e4af-b2bf-489c-aa3f-2871d663d60c",
-            url: "https://github.com/anthli/diffr-server"
+      steps {
+        checkout([
+          $class: "GitSCM",
+          branches: [[name: "master"]],
+          extensions: [[$class: "WipeWorkspace"]],
+          userRemoteConfigs: [
+            [
+              credentialsId: "a981e4af-b2bf-489c-aa3f-2871d663d60c",
+              url: "https://github.com/anthli/diffr-server"
+            ]
           ]
-        ]
-      ])
+        ])
+      }
     }
 
     stage("Gradle Clean and Assemble") {
-      if (isUnix()) {
-        sh "./gradlew clean assemble"
-      }
-      else {
-        bat "gradlew clean assemble"
+      steps {
+        if (isUnix()) {
+          sh "./gradlew clean assemble"
+        }
+        else {
+          bat "gradlew clean assemble"
+        }
       }
     }
 
