@@ -32,6 +32,7 @@ pipeline {
   agent any
 
   environment {
+    branch = "master"
     repoUrl = scm.getUserRemoteConfigs()[0].getUrl()
   }
 
@@ -44,7 +45,7 @@ pipeline {
       steps {
         checkout([
           $class: "GitSCM",
-          branches: [[name: env.GIT_LOCAL_BRANCH]],
+          branches: [[name: branch]],
           extensions: [[$class: "WipeWorkspace"]],
           userRemoteConfigs: [
             [
