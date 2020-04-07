@@ -19,24 +19,20 @@ pipeline {
     }
 
     stage("Gradle Clean and Assemble") {
-      steps {
-        if (isUnix()) {
-          sh "./gradlew clean assemble"
-        }
-        else {
-          bat "gradlew clean assemble"
-        }
+      if (isUnix()) {
+        sh "./gradlew clean assemble"
+      }
+      else {
+        bat "gradlew clean assemble"
       }
     }
 
     stage("Run Tests") {
-      steps {
-        if (isUnix()) {
-          sh "./gradlew test"
-        }
-        else {
-          bat "gradlew test"
-        }
+      if (isUnix()) {
+        sh "./gradlew test"
+      }
+      else {
+        bat "gradlew test"
       }
     }
 
