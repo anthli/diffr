@@ -44,7 +44,7 @@ pipeline {
       steps {
         checkout([
           $class: "GitSCM",
-          branches: [[name: "master"]],
+          branches: [[name: env.GIT_LOCAL_BRANCH]],
           extensions: [[$class: "WipeWorkspace"]],
           userRemoteConfigs: [
             [
