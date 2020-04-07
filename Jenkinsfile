@@ -1,5 +1,3 @@
-def repoUrl = scm.getUserRemoteConfigs()[0].getUrl()
-
 void setBuildStatus(String message, String state) {
   step([
     $class: "GitHubCommitStatusSetter",
@@ -32,6 +30,10 @@ void setBuildStatus(String message, String state) {
 
 pipeline {
   agent any
+
+  environment {
+    repoUrl = scm.getUserRemoteConfigs()[0].getUrl()
+  }
 
   stages {
     stage("Clone source") {
