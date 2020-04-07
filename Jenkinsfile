@@ -1,3 +1,35 @@
+def repoUrl = scm.getUserRemoteConfigs()[0].getUrl()
+
+void setBuildStatus(String message, String state) {
+  step([
+    $class: "GitHubCommitStatusSetter",
+    reposSource: [
+      $class: "ManuallyEnteredRepositorySource",
+      url: repoUrl
+    ],
+    contextSource: [
+      $class: "ManuallyEnteredCommitContextSource",
+      context: "ci/jenkins/build-status"
+    ],
+    errorHandlers: [
+      [
+        $class: "ChangingBuildStatusErrorHandler",
+        result: "UNSTABLE"
+      ]
+    ],
+    statusResultSource: [
+      $class: "ConditionalStatusResultSource",
+      results: [
+        [
+          $class: "AnyBuildResult",
+          message: message,
+          state: state
+        ]
+      ]
+    ]
+  ])
+}
+
 pipeline {
   agent any
 
@@ -64,36 +96,4 @@ pipeline {
       setBuildStatus("Build failed", "FAILURE")
     }
   }
-}
-
-def repoUrl = scm.getUserRemoteConfigs()[0].getUrl()
-
-void setBuildStatus(String message, String state) {
-  step([
-    $class: "GitHubCommitStatusSetter",
-    reposSource: [
-      $class: "ManuallyEnteredRepositorySource",
-      url: repoUrl
-    ],
-    contextSource: [
-      $class: "ManuallyEnteredCommitContextSource",
-      context: "ci/jenkins/build-status"
-    ],
-    errorHandlers: [
-      [
-        $class: "ChangingBuildStatusErrorHandler",
-        result: "UNSTABLE"
-      ]
-    ],
-    statusResultSource: [
-      $class: "ConditionalStatusResultSource",
-      results: [
-        [
-          $class: "AnyBuildResult",
-          message: message,
-          state: state
-        ]
-      ]
-    ]
-  ])
 }
