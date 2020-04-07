@@ -7,7 +7,7 @@ void setBuildStatus(String message, String state) {
     ],
     contextSource: [
       $class: "ManuallyEnteredCommitContextSource",
-      context: "ci/jenkins/build-status"
+      context: "jenkins-build-status"
     ],
     errorHandlers: [
       [
@@ -33,6 +33,10 @@ pipeline {
 
   environment {
     repoUrl = scm.getUserRemoteConfigs()[0].getUrl()
+  }
+
+  triggers {
+    githubPush()
   }
 
   stages {
