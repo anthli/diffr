@@ -18,6 +18,16 @@ pipeline {
       }
     }
 
+    stage("Make gradlew executable") {
+      steps {
+        script {
+          if (isUnix()) {
+            sh "chmod +x gradlew"
+          }
+        }
+      }
+    }
+
     stage("Gradle Clean and Assemble") {
       steps {
         script {
