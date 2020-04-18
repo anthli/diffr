@@ -1,5 +1,5 @@
 /**
- * diffr - just another diff tool.
+ * diffr - just another diff tool
  * Copyright (C) 2020 Anthony Li
  *
  * This program is free software: you can redistribute it and/or modify

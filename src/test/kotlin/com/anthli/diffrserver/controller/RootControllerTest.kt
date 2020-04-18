@@ -1,5 +1,5 @@
 /**
- * diffr - just another diff tool.
+ * diffr - just another diff tool
  * Copyright (C) 2020 Anthony Li
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,18 +21,15 @@ package com.anthli.diffrserver.controller
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpMethod
-import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
-class RootControllerTest : ControllerTest() {
+class RootControllerTest : ControllerTest("/") {
   @Test
   fun `test get on root endpoint`() {
-    testEndpoint("/", MediaType.TEXT_HTML, HttpMethod.GET, status().isOk, "Root")
-  }
-
-  @Test
-  fun `test get on invalid endpoint`() {
-    testEndpoint("/invalid", MediaType.TEXT_HTML, HttpMethod.GET, status().isNotFound)
+    testEndpoint(
+      method = HttpMethod.GET,
+      expectedStatus = status().isOk
+    )
   }
 }

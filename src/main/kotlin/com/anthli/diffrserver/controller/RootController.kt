@@ -1,5 +1,5 @@
 /**
- * diffr - just another diff tool.
+ * diffr - just another diff tool
  * Copyright (C) 2020 Anthony Li
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,6 +18,7 @@
 
 package com.anthli.diffrserver.controller
 
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -27,7 +28,5 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class RootController {
   @GetMapping("/")
-  fun index(): String {
-    return "Root"
-  }
+  fun getIndex(): ResponseEntity<Unit> = ResponseEntity.ok().build()
 }
