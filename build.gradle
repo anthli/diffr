@@ -1,38 +1,51 @@
+buildscript {
+  ext.kotlinVersion = "1.3.72"
+  ext.junitVersion = "5.6.2"
+  // Override the JUnit Jupiter version coming from Spring Boot
+  ext["junit-jupiter.version"] = "$junitVersion"
+}
+
 plugins {
-  id "org.jetbrains.kotlin.jvm" version "1.3.61"
+  id "io.spring.dependency-management" version "1.0.9.RELEASE"
+  id "org.jetbrains.kotlin.jvm" version "$kotlinVersion"
+  id "org.jetbrains.kotlin.plugin.serialization" version "$kotlinVersion"
+  id "org.jetbrains.kotlin.plugin.spring" version "$kotlinVersion"
+  id "org.springframework.boot" version "2.2.6.RELEASE"
 }
 
-version "0.0.1"
+version "0.1.0"
 
-allprojects {
-  repositories {
-    jcenter()
-    mavenCentral()
-  }
-}
+test {
+  useJUnitPlatform()
 
-subprojects {
-  apply plugin: "kotlin"
+  testLogging {
+    events = ["passed", "skipped", "failed"]
 
-  test {
-    useJUnitPlatform()
+    // Uncomment this to show standard out and error when running tests
+    // showStandardStreams = true
 
-    testLogging {
-      events = ["passed", "skipped", "failed"]
-
-      // Allow for tests
-      showStandardStreams = true
-
-      // Always show test output even if nothing changed
-      outputs.upToDateWhen {
-        false
-      }
+    // Always show test output even if nothing changed
+    outputs.upToDateWhen {
+      false
     }
   }
+}
 
-  dependencies {
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.2"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.5.2"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+repositories {
+  jcenter()
+  mavenCentral()
+}
+
+dependencies {
+  implementation "com.anthli:kdiff:1.0.0"
+  implementation "org.jetbrains.kotlin:kotlin-reflect"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib"
+  implementation "org.springframework.boot:spring-boot-starter-web"
+
+  testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+  testImplementation("org.springframework.boot:spring-boot-starter-test") {
+    exclude group: "org.junit.vintage", module: "junit-vintage-engine"
   }
+
+  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
 }

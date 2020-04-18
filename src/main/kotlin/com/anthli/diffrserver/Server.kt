@@ -1,5 +1,5 @@
 /**
- * diffr - just another diff tool.
+ * diffr - just another diff tool
  * Copyright (C) 2020 Anthony Li
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr
+package com.anthli.diffrserver
 
-/**
- * Encapsulation of the type of operation and the involved text of a diff.
- */
-data class Diff(val op: Operation, val text: String) {
-  override fun toString(): String {
-    return buildString {
-      append(when (op) {
-        Operation.INSERT -> "+"
-        Operation.DELETE -> "-"
-        Operation.EQUAL -> ""
-      })
-      append(text)
-    }
-  }
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
+
+@SpringBootApplication
+class Application
+
+fun main(args: Array<String>) {
+  SpringApplication.run(Application::class.java, *args)
 }

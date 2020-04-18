@@ -1,5 +1,5 @@
 /**
- * diffr - just another diff tool.
+ * diffr - just another diff tool
  * Copyright (C) 2020 Anthony Li
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,27 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.anthli.diffr
+package com.anthli.diffrserver.controller
 
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpMethod
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-class DiffTest {
+@SpringBootTest
+class RootControllerTest : ControllerTest("/") {
   @Test
-  fun `test Operation INSERT toString`() {
-    val diff = Diff(Operation.INSERT, "A")
-    Assertions.assertEquals("+A", diff.toString())
-  }
-
-  @Test
-  fun `test Operation DELETE toString`() {
-    val diff = Diff(Operation.DELETE, "b")
-    Assertions.assertEquals("-b", diff.toString())
-  }
-
-  @Test
-  fun `test Operation EQUAL toString`() {
-    val diff = Diff(Operation.EQUAL, "1")
-    Assertions.assertEquals("1", diff.toString())
+  fun `test get on root endpoint`() {
+    testEndpoint(
+      method = HttpMethod.GET,
+      expectedStatus = status().isOk
+    )
   }
 }
