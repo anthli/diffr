@@ -6,6 +6,8 @@
 
 package com.anthli.diffrserver
 
+import com.anthli.diffrserver.routing.diff
+import com.anthli.diffrserver.routing.root
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.CallLogging
